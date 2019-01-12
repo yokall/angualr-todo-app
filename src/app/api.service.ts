@@ -3,7 +3,7 @@ import { environment } from '../environments/environment';
 
 import { Http, Response } from '@angular/http';
 import { Todo } from './todo';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 const API_URL = environment.apiUrl;
@@ -76,6 +76,6 @@ export class ApiService {
 
   private handleError(error: Response | any) {
     console.error('ApiService::handleError', error);
-    return Observable.throw(error);
+    return throwError(error);
   }
 }
