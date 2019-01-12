@@ -1,35 +1,59 @@
-import { Component } from '@angular/core';
-import { Todo } from './todo';
+import { Component, OnInit } from '@angular/core';
 import { TodoDataService } from './todo-data.service';
+import { Todo } from './todo';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: []
+  providers: [TodoDataService]
 })
-export class AppComponent {
-  // Ask Angular DI system to inject the dependency
-  // associated with the dependency injection token `TodoDataService`
-  // and assign it to a property called `todoDataService`
-  constructor(private todoDataService: TodoDataService) {
+export class AppComponent implements OnInit {
+
+  todos: Todo[] = [];
+
+  constructor(
+    private todoDataService: TodoDataService
+  ) {
   }
 
-  // Add new method to handle event emitted by TodoListHeaderComponent
-  onAddTodo(todo: Todo) {
-    this.todoDataService.addTodo(todo);
+  public ngOnInit() {
+    this.todoDataService
+      .getAllTodos()
+      .subscribe(
+        (todos) => {
+          this.todos = todos;
+        }
+      );
   }
 
-  onRemoveTodo(todo: Todo) {
-    this.todoDataService.deleteTodoById(todo.id);
+  onAddTodo(todo) {
+    this.todoDataService
+      .addTodo(todo)
+      .subscribe(
+        (newTodo) => {
+          this.todos = this.todos.concat(newTodo);
+        }
+      );
   }
 
-  get todos() {
-    return this.todoDataService.getAllTodos();
+  onToggleTodoComplete(todo) {
+    this.todoDataService
+      .toggleTodoComplete(todo)
+      .subscribe(
+        (updatedTodo) => {
+          todo = updatedTodo;
+        }
+      );
   }
 
-  // Service is now available as this.todoDataService
-  onToggleTodoComplete(todo: Todo) {
-    this.todoDataService.toggleTodoComplete(todo);
+  onRemoveTodo(todo) {
+    this.todoDataService
+      .deleteTodoById(todo.id)
+      .subscribe(
+        (_) => {
+          this.todos = this.todos.filter((t) => t.id !== todo.id);
+        }
+      );
   }
 }
