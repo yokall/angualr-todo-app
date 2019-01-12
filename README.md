@@ -2,6 +2,8 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.1.
 
+It is based on the todo app tutorial on sitepoint [Building a Todo App with Angular CLI](https://www.sitepoint.com/angular-2-tutorial/)
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
